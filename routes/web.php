@@ -22,6 +22,3 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
-
-Route::get('place-add','PlaceController@addPlace')->name('add.place');
-Route::get('place-list','PlaceController@listPlace')->name('list.place');
