@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductAjaxController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,3 +24,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+// Route::resource('products-ajax-crud', ProductAjaxController::class);
+// Route::resource('/company', CompaniesController::class);
+Route::resource('employee', EmployeeController::class);
+Route::resource('products-ajax-crud', ProductAjaxController::class);
