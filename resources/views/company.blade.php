@@ -131,11 +131,12 @@
                         $("#addform").html(" ");
                     }
                 },
-                error: function (xhr) {
-                $('.validation-errors').html('');
-                $.each(xhr.responseJSON.errors, function(key,value) {
-                $('.validation-errors').append('<div class="alert alert-danger">'+value+'</div');
-                 }); 
+                error: function (error) {
+                    console.log(error.response.data.message);
+                // $('.validation-errors').html('');
+                // $.each(xhr.responseJSON.errors, function(key,value) {
+                // $('.validation-errors').append('<div class="alert alert-danger">'+value+'</div');
+                //  }); 
                 }
             });
         });

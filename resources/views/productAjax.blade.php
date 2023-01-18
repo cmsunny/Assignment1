@@ -1,3 +1,4 @@
+                 
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,29 +52,29 @@
             </div>
         </div>
     </div>
- 
-<div class="container">
-    <h1>Company Add Data</h1>
-    <a class="btn btn-success" href="javascript:void(0)" id="createNewProduct"> Add new company</a>
-    <table class="table table-bordered data-table">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Website</th>
-                <th width="280px">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
-     
+  
+        <div class="container">
+            <h1>Company Add Data</h1>
+            <a class="btn btn-success" href="javascript:void(0)" id="createNewProduct"> Add new company</a>
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Website</th>
+                        <th width="280px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    
 
       
 </body>
-      
+
 <script type="text/javascript">
   $(function () {
       
@@ -189,4 +190,5 @@
        
   });
 </script>
+
 </html>

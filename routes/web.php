@@ -19,13 +19,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
-
 // Route::resource('products-ajax-crud', ProductAjaxController::class);
-// Route::resource('/company', CompaniesController::class);
-Route::resource('employee', EmployeeController::class);
+
 Route::resource('products-ajax-crud', ProductAjaxController::class);
+Route::group([ 'middleware' => 'auth'], function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    
+    Route::resource('company', CompaniesController::class);
+    Route::resource('employee', EmployeeController::class);
+
+   
+});
+require __DIR__.'/auth.php';

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
-
+use DataTables;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
@@ -16,79 +16,54 @@ class CompaniesController extends Controller
      */
     public function index(Request $request)
     {
+     
         if ($request->ajax()) {
             $data = Company::latest()->get();
+  
             return Datatables::of($data)
             ->addIndexColumn()
-            ->addColumn('action',function($row){
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editProduct"><i class="fas fa-pen text-white"></i></a>';
-                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteProduct"><i class="far fa-trash-alt text-white" data-feather="delete"></i></a>';
+            ->addColumn('action', function($row){
 
-                return $btn;
+                   $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editProduct">Edit</a>';
 
+                   $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteProduct">Delete</a>';
+
+                    return $btn;
             })
-            ->rawColumns(['action'])->make(true);
-
+            ->rawColumns(['action'])
+            ->make(true);
         }
-
-        return view('company');
-    } 
+        
+        return view('companies.index');
+    }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('model');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
+    
     public function store(Request $request)
     {
-        $rules = [
-            'name' => ['required'],
-            'email' => ['required'],
-            'website' => ['required']
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'website' => 'required|url'
+        ]);
+        if($validator->fails())
+        {
             return response()->json([
-                'status' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
-                'errors' => $validator->errors()
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        }
-        // Company::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'website' => $request->website
-        // ]);
-
+                'status'=>400,
+                'errors'=>$validator->messages(),
+            ]);
+        } 
+        Company::create($request->all());
         return response()->json([
             'status' =>'200',
             'message' => 'Data Added sucessfully'
         ]);
-
-        
-       
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      *
@@ -97,8 +72,9 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::find($id);
-        return response()->json($product);
+        
+        $company = Company::find($id);
+        return response()->json($company);
     }
 
     /**
@@ -109,8 +85,26 @@ class CompaniesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {  
+        $company = Company::find($id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'website' => 'required|url'
+        ]);
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=>400,
+                'errors'=>$validator->messages(),
+            ]);
+        } 
+        $company->update($request->all());
+        return response()->json([
+            'status' =>'200',
+            'message' => 'Data Added sucessfully'
+        ]);       
+
     }
 
     /**
@@ -121,8 +115,8 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        Product::find($id)->delete();
+        Company::find($id)->delete();
      
-        return response()->json(['success'=>'Product deleted successfully.']);
+        return response()->json(['success'=>'Company deleted successfully.']);
     }
 }
